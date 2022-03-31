@@ -1,53 +1,56 @@
-bool isValid(vector<vector<int>> m,int row, int col,int n) {
-        if (row >= 0 && row < n && col >= 0 && col < n && m[row][col] == 1) {
+public:
+    bool isSafe(vector<vector<int>> &m,int i,int j,int n)
+    {
+        if((i >= 0) && (j >= 0) && (j<n) && (i<n) && (m[i][j] == 1)) // to check if its safe to move
+        {
             return true;
         }
         return false;
     }
-    void solve(vector<vector<int>> m, int n,int i,int j,vector<string>&S,string p)
+    void solve(vector<vector<int>> &m,int n,int row,int col, vector<string>&ans,string p)
     {
-         if(i == n-1 && j == n-1)
-         {
-             S.push_back(p);
-             return;
-         }
-       // downward
-    if (isValid(m,i+1,j,n)) {
-      m[i][j] = 2; // to keep track it its visited or not
-      solve(m,n,i + 1, j,S, p + 'D');
-       m[i][j] = 1;
-    }
-
-    // left
-    if (isValid(m,i,j-1,n)) {
-       m[i][j] = 2;
-       solve(m,n,i, j-1,S, p + 'L');
-      m[i][j] = 1;
-    }
-
-    // right 
-    if (isValid(m,i,j+1,n)) {
-       m[i][j] = 2;
-       solve(m,n,i, j+1,S, p + 'R');
-       m[i][j] = 1;
-    }
-
-    // upward
-    if (isValid(m,i-1,j,n)) {
-       m[i][j] = 2;
-       solve(m,n,i - 1, j,S, p + 'U');
-       m[i][j] = 1;
-    }
-
-    }    
-    vector<string> findPath(vector<vector<int>> &m, int n) {
-        vector<string> v;
-        vector < vector < int >> vis(n, vector < int > (n, 0));
-        if(m[n-1][n-1] == 0 || m[0][0] == 0)
+        if((row == n-1 )&& (col == n-1))
         {
-            return v;
+            ans.push_back(p);
+            return;
         }
-        string p = "";
-        solve(m,n,0,0,v,p);
-        return v;
+        // for downward
+        
+        if(isSafe(m,row+1,col,n))
+        {
+            m[row][col] = 2; // in recursion tree its marked as visited
+            solve(m,n,row+1,col,ans,p+'D');
+             m[row][col] = 1;
+        }
+        // for left
+         if(isSafe(m,row,col-1,n))
+        {
+            m[row][col] = 2;
+            solve(m,n,row,col-1,ans,p+'L');
+             m[row][col] = 1;
+        }
+        //for right
+        if(isSafe(m,row,col+1,n))
+        {
+            m[row][col] = 2;
+            solve(m,n,row,col+1,ans,p+'R');
+            m[row][col] = 1;
+        }
+       // for up
+        if(isSafe(m,row-1,col,n))
+        {
+            m[row][col] = 2;
+            solve(m,n,row-1,col,ans,p+'U');
+             m[row][col] = 1;
+        }
+    }
+    vector<string> findPath(vector<vector<int>> &m, int n) {
+         vector<string> ans;
+         if(m[0][0] == 0 || m[n-1][n-1] == 0)
+         {
+             return ans;
+         }
+         string p = "";
+         solve(m,n,0,0,ans,p);
+         return ans;
     }
