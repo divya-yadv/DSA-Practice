@@ -14,7 +14,7 @@ int binomialCoeff(int n, int k)
 }
 
 #dp
-
+O(n*r) O(r)
 int nCr(int n, int r){
         int dp[n+1][n+1];
         if(n<r){
