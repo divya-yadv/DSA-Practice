@@ -1,5 +1,5 @@
 # Recursion
-
+//O(power(3,m))
 int solve(string s,string t, int i, int j)
   {
       if(i<0)
@@ -27,7 +27,9 @@ int solve(string s,string t, int i, int j)
     }
 
 
-# Memoisation
+# Memoisation top-down DP
+// O(m x n)
+//Auxilary space O(m*n)+O(m+n)  
 int solve(string s,string t, int i, int j,vector<vector<int>>&dp)
   {
       if(i<0)
@@ -62,7 +64,7 @@ int solve(string s,string t, int i, int j,vector<vector<int>>&dp)
     }
 
 # Tabulation
-
+//O(m*n) O(m*n)
 int editDistance(string s, string t) {
         int n = s.length();
         int m = t.length();
@@ -90,4 +92,37 @@ int editDistance(string s, string t) {
             }
         }
         return dp[n][m];
+    }
+
+
+//Space optimized solution
+To fill a row in DP array we require only one row the upper row. 
+  so we can have two arrays one for current and one for prev row
+  
+   int editDistance(string s, string t) {
+        int n = s.length();
+        int m = t.length();
+       vector<int> prev(m+1,0);
+       vector<int> curr (m+1,0);
+        for(int j=0;j<=m;j++)
+        {
+            prev[j] = j;
+        }
+        for(int i=1;i<=n;i++)
+        {
+            curr[0] = i;
+            for(int j=1;j<=m;j++)
+            {
+                if(s[i-1] == t[j-1])
+                {
+                    curr[j] = prev[j-1];
+                }
+                else
+                {
+                    curr[j] = min(1+prev[j],min(1+prev[j-1],1+curr[j-1]));
+                }
+            }
+            prev = curr;
+        }
+        return prev[m];
     }
